@@ -1,0 +1,75 @@
+Python Script:
+
+from faker import Faker
+import pandas as pd
+import random
+import datetime
+
+----from faker import Faker: Import the Faker library, which generates fake data.
+import pandas as pd: Import the pandas library and alias it as 'pd', which is commonly used for data manipulation and analysis.
+import random: Import the random module, which provides functions for generating random numbers.
+import datetime: Import the datetime module, which provides classes for manipulating dates and times.
+
+fake = Faker()
+--Create a Faker object, which will be used to generate fake data.
+
+# Create empty lists to store data
+order_ids = []
+customer_ids = []
+genders = []
+ages = []
+dates = []
+qtys = []
+cities = []
+statuses = []
+channels = []
+skus = []
+categories = []
+amounts = []
+ship_cities = []
+---Initialize empty lists to store each column of the dataset
+
+# Generate data
+for _ in range(5000):
+    order_ids.append(fake.uuid4())
+    customer_ids.append(fake.uuid4())
+    genders.append(fake.random_element(elements=('Male', 'Female')))
+    ages.append(random.randint(18, 80))
+    dates.append(fake.date_between(start_date='-2y', end_date='today'))
+    qtys.append(random.randint(1, 10))
+    cities.append(fake.city())
+    statuses.append(fake.random_element(elements=('Pending', 'Shipped', 'Delivered')))
+    channels.append(fake.random_element(elements=('Online', 'In-store')))
+    skus.append(fake.uuid4()[:8])
+    categories.append(fake.random_element(elements=('Electronics', 'Clothing', 'Books', 'Home', 'Toys')))
+    amounts.append(round(random.uniform(10, 200), 2))
+    ship_cities.append(fake.city())
+----Loop 5000 times to generate data for each row of the dataset.
+fake.uuid4(): Generate a random UUID for order_id and customer_id.
+fake.random_element(): Generate a random element from a given list for gender, status, and channel.
+random.randint(18, 80): Generate a random integer between 18 and 80 for age.
+fake.date_between(start_date='-2y', end_date='today'): Generate a random date within the last two years for the date column.
+random.randint(1, 10): Generate a random integer between 1 and 10 for quantity.
+fake.city(): Generate a random city name for city and ship_city columns.
+round(random.uniform(10, 200), 2): Generate a random floating-point number between 10 and 200, rounded to two decimal places, for the amount column.
+
+# Create DataFrame
+data = pd.DataFrame({
+    'Order_Id': order_ids,
+    'Customer_Id': customer_ids,
+    'Gender': genders,
+    'Age': ages,
+    'Date': dates,
+    'Qty': qtys,
+    'City': cities,
+    'Status': statuses,
+    'Channel': channels,
+    'SKU': skus,
+    'Category': categories,
+    'Amount': amounts,
+    'Ship_City': ship_cities
+})
+----Create a pandas DataFrame using the generated data and column names.
+# Save to Excel
+data.to_excel('sales_data.xlsx', index=False)
+---Save the DataFrame to an Excel file named 'sales_data.xlsx', without including the index column.
