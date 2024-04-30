@@ -1,8 +1,8 @@
-# Intoduction
 
-## Background: Technical Process Documentation:
+## Objective: 
+I intend to leverage the generated sales data for analysis, decision-making, and to create a YouTube tutorial video. This video will demonstrate the process of generating synthetic sales data using Python Faker library, integrating it into Microsoft SQL Server, and creating visualizations and dashboards with Excel. The tutorial aims to educate and empower viewers with practical skills in data analysis, SQL Server integration, and visualization techniques, while also providing insights for improving sales performance and decision-making in retail.
 
-## Objective: Generate a dataset and integrate it into Microsoft SQL Server for sales analysis at Astroidegita Store.
+## Process
 
 ## Data Generation with Python Faker:
 Utilized Python's Faker library to generate realistic sales data.
