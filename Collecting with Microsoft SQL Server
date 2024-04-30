@@ -1,0 +1,67 @@
+import pyodbc
+import pandas as pd
+
+# Connection parameters
+driver = '{ODBC Driver 17 for SQL Server}'
+server = 'PC\SQLEXPRESS'
+database = 'Astroidstore'
+
+# Connection string
+conn_str = f'DRIVER={driver};SERVER={server};DATABASE={database};Trusted_Connection=yes'
+---This line constructs a connection string using formatted string literals (f'...'). 
+---It contains information about the driver, server, database, and authentication method. Trusted_Connection=yes indicates that Windows Authentication will be used.
+
+# Establish connection
+conn = pyodbc.connect(conn_str)
+---This line establishes a connection to the SQL Server using the connection string created in the previous step.
+
+# Load data into SQL Server
+cursor = conn.cursor()
+--This line creates a cursor object to execute SQL queries on the database.
+
+# Read Excel file into a pandas DataFrame
+data = pd.read_excel('sales_data.xlsx')
+----This line reads the sales data from the Excel file into a pandas DataFrame named data.
+
+# Define table name
+table_name = 'SalesData'
+----This line assigns the name "SalesData" to the table where the sales data will be stored in the SQL Server database.
+
+# Create table in SQL Server
+create_table_query = f"""
+CREATE TABLE {table_name} (
+    Order_Id NVARCHAR(255),
+    Customer_Id NVARCHAR(255),
+    Gender NVARCHAR(10),
+    Age INT,
+    Date DATE,
+    Qty INT,
+    City NVARCHAR(100),
+    Status NVARCHAR(20),
+    Channel NVARCHAR(20),
+    SKU NVARCHAR(50),
+    Category NVARCHAR(50),
+    Amount DECIMAL(10, 2),
+    Ship_City NVARCHAR(100)
+)
+"""
+cursor.execute(create_table_query)
+conn.commit()
+---This block of code creates a SQL query to create a table named "SalesData" in the SQL Server database with the specified columns and data types. 
+It then executes the query using the cursor and commits the changes to the database.
+
+
+# Insert data into the table
+for _, row in data.iterrows():
+    insert_query = f"""
+    INSERT INTO {table_name} (Order_Id, Customer_Id, Gender, Age, Date, Qty, City, Status, Channel, SKU, Category, Amount, Ship_City)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
+    cursor.execute(insert_query, tuple(row))
+    conn.commit()
+---This loop iterates over each row in the pandas DataFrame data and constructs an SQL query to insert the data into the "SalesData" table. 
+The query is executed for each row, and the changes are committed to the database.
+
+# Close connection
+conn.close()
+--Finally, this line closes the connection to the SQL Server database once the data insertion is complete.
