@@ -2,8 +2,8 @@ import pyodbc
 import pandas as pd
 
 # Connection parameters
-driver = '{ODBC Driver 17 for SQL Server}'
-server = 'PC\SQLEXPRESS'
+driver = '{ODBC Driver ** for SQL Server}'
+server = '***********'
 database = 'Astroidstore'
 
 # Connection string
